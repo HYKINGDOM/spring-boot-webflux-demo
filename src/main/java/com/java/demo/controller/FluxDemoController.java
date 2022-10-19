@@ -4,6 +4,7 @@ package com.java.demo.controller;
 import com.java.demo.domain.Account;
 import com.java.demo.service.WebfluxService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,7 @@ import reactor.core.publisher.Flux;
 import java.util.List;
 
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/flux")
 public class FluxDemoController {
