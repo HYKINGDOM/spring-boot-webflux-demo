@@ -2,13 +2,14 @@ package com.java.demo.controller;
 
 
 import com.java.demo.domain.Account;
+import com.java.demo.repository.entity.AddressEntity;
 import com.java.demo.service.WebfluxService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -35,6 +36,18 @@ public class FluxDemoController {
     @GetMapping("/getAllAccounts")
     public Flux<List<Account>> getAllAccounts() {
         return Flux.just(webfluxService.getAllAccounts());
+    }
+
+
+    @GetMapping("/getAddressToString")
+    public Flux<String> getAddressToString() {
+        return webfluxService.getAddressToString();
+    }
+
+
+    @GetMapping("/save")
+    public Mono<AddressEntity> saveAddressEntity() {
+        return webfluxService.saveAddressEntity();
     }
 
 }
