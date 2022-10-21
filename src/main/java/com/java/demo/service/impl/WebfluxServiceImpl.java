@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +55,7 @@ public class WebfluxServiceImpl implements WebfluxService {
         }
 
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 2; i++) {
             ADDRESS_ID_LIST.add(RandomUtil.randomInt(600));
         }
     }
@@ -129,27 +130,7 @@ public class WebfluxServiceImpl implements WebfluxService {
 //        }
 
 
-        Flux<String> stringFlux = Flux.fromIterable(ADDRESS_ID_LIST)
-                .map(s -> {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    return addressRepository.findAllByAddressId(s);
-                })
-                .map(s -> {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            return "<letter:" + s.toString() + ">";
-                        }
-                );
-
-
-//        Flux<String> flux =
+        //        Flux<String> flux =
 //                Flux.just(addressRepository.findAllByAddressId(addressId))
 //                        .doFinally(type -> {
 //                            if (type == SignalType.CANCEL)  // 2
@@ -158,7 +139,45 @@ public class WebfluxServiceImpl implements WebfluxService {
 //                        .take(1)
 //                        .map(com.java.demo.repository.entity.AddressEntity::toString);
 
-        return stringFlux;
+//        List<String> arrayList = new ArrayList<>();
+//        arrayList.add("foo");
+//        arrayList.add("bar");
+//
+//        Flux.fromIterable(arrayList);
+
+
+        Flux<Object> error = Flux.error(new IllegalStateException());
+
+        Duration duration = Duration.ofSeconds(10);
+        Flux<Long> interval = Flux.interval(duration);
+
+        return Flux.fromIterable(ADDRESS_ID_LIST)
+                .map(s -> {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return addressRepository.findAllByAddressId(s);
+                })
+                .map(s -> {
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            return s.subscribe(AddressEntity::getAddress2);
+                        }
+                )
+                .map(s -> {
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            return "<letter:" + s + ">";
+                        }
+                );
     }
 
 

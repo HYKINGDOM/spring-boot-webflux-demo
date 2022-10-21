@@ -6,6 +6,7 @@ import com.java.demo.repository.entity.AddressEntity;
 import com.java.demo.service.WebfluxService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -50,4 +51,9 @@ public class FluxDemoController {
         return webfluxService.saveAddressEntity();
     }
 
+
+    @PostMapping("/options")
+    public Mono<AddressEntity> optionsEntity() {
+        return webfluxService.saveAddressEntity();
+    }
 }
